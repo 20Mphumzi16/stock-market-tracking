@@ -1,0 +1,6 @@
+#1. Authentication through username, password, and hashing
+#2. Two factor authentication, using emails 
+#3. add a timer for the two factor authentication
+#4. login + signup pages
+  #1. name, surname, email, and password, email verification
+#5. database to store user credentials
