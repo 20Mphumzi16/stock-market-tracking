@@ -1,8 +1,21 @@
 'use strict';
 
-import Stock from '../models/API.js'
+import Stock from './API.js';
+import mongoose from 'mongoose';
 
 const API = 'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=SE72K7OKP164LHN4';
+
+// Connect to MongoDB
+const MONGODB_URI = process.env.MONGODB_URI
+ 
+const options = {
+      serverSelectionTimeoutMS: 30000, // Increase to 30 seconds
+      socketTimeoutMS: 45000 // Increase to 45 seconds
+  };
+ 
+  mongoose.connect("mongodb+srv://cubotx220_db_user:r10ev82am8zR92bU@stockmarkettrackinglogi.1bzsxs2.mongodb.net/", options)
+      .then(() => console.log("Database Connected"))
+      .catch(err => console.log(err));
 
 fetch(API, { headers: { 'User-Agent': 'request' } })
   .then(res => {
@@ -40,10 +53,24 @@ fetch(API, { headers: { 'User-Agent': 'request' } })
       change
     });
     
-    await stock.save()
-
     console.log(stock);
+
+    await stock.save();
+
+    console.log("done");
+
   })
   .catch(err => {
     console.log('Error:', err);
   });
+
+const sym = "IBM"
+const id = "691c3c3f33cabeb67096db7c"
+const stockdb = await Stock.findOne({
+          $or: [
+              { _id: id},
+              { symbol: sym }
+          ]
+      });
+ 
+console.log(stockdb);
